@@ -7,11 +7,11 @@ use Psr\Http\Message\UriInterface;
 
 class Request extends Message implements RequestInterface
 {
-    private ?string $requestTarget;
-    private UriInterface $uri;
+    protected ?string $requestTarget;
+    protected UriInterface $uri;
 
     public function __construct(
-        private string $method,
+        protected string $method,
         UriInterface|string $uri,
         array $headers = [],
         $body = null,
@@ -88,7 +88,7 @@ class Request extends Message implements RequestInterface
         return $new;
     }
 
-    private function updateHostFromUri(): void
+    protected function updateHostFromUri(): void
     {
         if ('' === $host = $this->uri->getHost()) {
             return;
