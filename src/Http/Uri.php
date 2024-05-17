@@ -257,4 +257,9 @@ class Uri implements UriInterface
     {
         return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $str);
     }
+
+    private static function rawurlencodeMatchZero(array $match): string
+    {
+        return \rawurlencode($match[0]);
+    }
 }

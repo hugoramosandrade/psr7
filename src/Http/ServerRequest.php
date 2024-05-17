@@ -13,8 +13,7 @@ class ServerRequest extends Request implements ServerRequestInterface
     private array $coockieParams = [];
     private array|object|null $parsedBody;
     private array $queryParams = [];
-    /** @var UploadedFileInterface[] */
-    private array $uploadedFiles = [];
+    
 
     public function __construct(
         string $method,
@@ -22,7 +21,9 @@ class ServerRequest extends Request implements ServerRequestInterface
         array $headers = [],
         string|StreamInterface|null $body = null,
         string $version = '1.1',
-        private array $serverParams = []
+        private array $serverParams = [],
+        /** @var UploadedFileInterface[] */
+        private array $uploadedFiles = [],
     )
     {
         if (is_string($uri)) $uri = new Uri($uri);
@@ -33,6 +34,10 @@ class ServerRequest extends Request implements ServerRequestInterface
         parse_str($uri->getQuery(), $this->queryParams);
 
         if (!$this->hasHeader('Host')) $this->updateHostFromUri();
+
+        if ($body !== '' && !is_null($body)) {
+            $this->stream = Stream::create($body);
+        }
     }
 
     public function getServerParams(): array
