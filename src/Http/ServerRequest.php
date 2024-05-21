@@ -10,10 +10,8 @@ use Psr\Http\Message\UriInterface;
 class ServerRequest extends Request implements ServerRequestInterface
 {
     private array $attributes = [];
-    private array $coockieParams = [];
-    private array|object|null $parsedBody;
+    private array|object|null $parsedBody = null;
     private array $queryParams = [];
-    
 
     public function __construct(
         string $method,
@@ -24,6 +22,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         private array $serverParams = [],
         /** @var UploadedFileInterface[] */
         private array $uploadedFiles = [],
+        private ?array $coockieParams = [],
     )
     {
         if (is_string($uri)) $uri = new Uri($uri);
@@ -36,7 +35,13 @@ class ServerRequest extends Request implements ServerRequestInterface
         if (!$this->hasHeader('Host')) $this->updateHostFromUri();
 
         if ($body !== '' && !is_null($body)) {
+            $this->parsedBody = json_decode($body);
             $this->stream = Stream::create($body);
+        }
+
+        if ($body instanceof StreamInterface) {
+            $this->stream = $body;
+            $this->parsedBody = json_decode($body->getContents());
         }
     }
 

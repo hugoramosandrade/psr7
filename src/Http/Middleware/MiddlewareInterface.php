@@ -12,19 +12,19 @@ class MiddlewareInterface
     public function process(Request $request)
     {
         /** @var UploadedFileInterface[] */
-        $uploadedFiles = [];
-        foreach ($request->files as $files) {
-            if (array_is_list($files)) {
-                foreach ($files as $file) {
-                    $uploadedFiles[] = new UploadedFile($file['tmp_name'], $file['size'], $file['error'], $file['name'], $file['type']);
-                }
-            } else {
-                $uploadedFiles[] = new UploadedFile($files['tmp_name'], $files['size'], $files['error'], $files['name'], $files['type']);
-            }
-        }
+        // $uploadedFiles = [];
+        // foreach ($request->files as $key => $files) {
+        //     if (array_is_list($files)) {
+        //         foreach ($files as $file) {
+        //             $uploadedFiles[$key][] = new UploadedFile($file['tmp_name'], $file['size'], $file['error'], $file['name'], $file['type']);
+        //         }
+        //     } else {
+        //         $uploadedFiles[$key] = new UploadedFile($files['tmp_name'], $files['size'], $files['error'], $files['name'], $files['type']);
+        //     }
+        // }
 
-        $url = $request->server['remote_addr'].":".$request->server['server_port'].$request->server['path_info']."?".$request->server['query_string'];
+        // $url = $request->server['remote_addr'].":".$request->server['server_port'].$request->server['path_info']."?".$request->server['query_string'];
         // $serverRequest = new ServerRequest($request->getMethod(),$url, $request->header, $request->rawContent(), $request->server['server_protocol'], $request->server, $uploadedFiles);
-        // dump($uploadedFiles);
+        dump($request->cookie);
     }
 }
