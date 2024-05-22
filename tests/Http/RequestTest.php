@@ -11,7 +11,6 @@ use Psr\Http\Message\UriInterface;
 class RequestTest extends TestCase
 {
     private RequestInterface $request;
-    private string $requestTarget;
     private string $uri = "http://localhost:3001/?msg=teste&type=success";
     private array $headers = ["NAME" => "value"];
     private string $body = '{"name": "user", "email": "user@email.com.br"}';
