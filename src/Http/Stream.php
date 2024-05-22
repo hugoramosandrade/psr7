@@ -12,7 +12,7 @@ class Stream implements StreamInterface
     private bool $seekable;
     private bool $readable;
     private bool $writable;
-    private mixed $uri;
+    private mixed $uri = null;
     private ?int $size = null;
     private const READ_WRITE_HASH = [
         'read' => [
@@ -37,7 +37,7 @@ class Stream implements StreamInterface
 
         $this->stream = $body;
         $meta = stream_get_meta_data($this->stream);
-        $this->seekable = $meta['seekable'] && fseek($this->stream, 0, SEEK_CUR);
+        $this->seekable = $meta['seekable'] && fseek($this->stream, 0, SEEK_CUR) === 0;
         $this->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
         $this->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
     }
@@ -97,7 +97,7 @@ class Stream implements StreamInterface
         }
 
         $result = $this->stream;
-        unset($stream);
+        unset($this->stream);
         $this->size = $this->uri = null;
         $this->readable = $this->writable = $this->seekable = false;
 
