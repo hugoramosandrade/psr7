@@ -12,6 +12,19 @@ class Message implements MessageInterface
     protected string $protocol = '1.1';
     protected ?StreamInterface $stream = null;
 
+    public function __construct(
+        ?array $headers = [],
+        string|StreamInterface|Null $stream = null
+    )
+    {
+        $this->setHeaders($headers);
+        if ($stream instanceof StreamInterface) {
+            $this->stream = $stream;
+        } elseif (is_string($stream)) {
+            $this->stream = Stream::create($stream);
+        }
+    }
+
     public function getProtocolVersion(): string
     {
         return $this->protocol;
@@ -52,7 +65,7 @@ class Message implements MessageInterface
 
     public function getHeaderLine(string $name): string
     {
-        return implode(', ', $this->getHeaders($name));
+        return implode(', ', $this->getHeader($name));
     }
 
     public function withHeader(string $name, $value): MessageInterface
@@ -64,7 +77,13 @@ class Message implements MessageInterface
             unset($new->headers[$new->headerNames[$normalized]]);
         }
         $new->headerNames[$normalized] = $name;
-        $new->headers[$name] = $value;
+        if (is_string($value)) {
+            $new->headers[$name] = [$value];
+        } elseif(is_array($value)) {
+            $new->headers[$name] = $value;
+        } else {
+            throw new \InvalidArgumentException("The value argument must be type of array or string, " . gettype($value) . " given");
+        }
 
         return $new;
     }
@@ -72,7 +91,13 @@ class Message implements MessageInterface
     public function withAddedHeader(string $name, $value): MessageInterface
     {
         $new = clone $this;
-        $new->setHeaders([$name => $value]);
+        if (is_string($value)) {
+            $new->setHeaders([$name => [$value]]);
+        } else if (is_array($value)){
+            $new->setHeaders([$name => $value]);
+        } else {
+            throw new \InvalidArgumentException("The value argument must be type of array or string, " . gettype($value) . " given");
+        }
 
         return $new;
     }

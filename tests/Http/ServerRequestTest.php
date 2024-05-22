@@ -11,7 +11,7 @@ class ServerRequestTest extends TestCase
 {
     private ServerRequestInterface $request;
     private array $headers = [
-        "NAME" => "value"
+        "NAME" => ["value"]
     ];
     private array $stream = [
         "name" => "teste",
