@@ -3,18 +3,19 @@
 namespace Hugo\Psr7\Http;
 
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
 class Request extends Message implements RequestInterface
 {
-    protected ?string $requestTarget;
+    protected ?string $requestTarget = null;
     protected UriInterface $uri;
 
     public function __construct(
         protected string $method,
         UriInterface|string $uri,
         array $headers = [],
-        $body = null,
+        string|StreamInterface|null $body = null,
         string $version = '1.1'
     )
     {
@@ -30,7 +31,9 @@ class Request extends Message implements RequestInterface
             $this->updateHostFromUri();
         }
 
-        if ($body !== '' && $body !== null) {
+        if ($body instanceof StreamInterface) {
+            $this->stream = $body;
+        } else if ($body !== '' && $body !== null) {
             $this->stream = Stream::create($body);
         }
     }
