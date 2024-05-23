@@ -129,6 +129,8 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->userInfo = $info;
+
+        return $new;
     }
 
     public function withHost(string $host): UriInterface

@@ -49,4 +49,88 @@ class UriTest extends TestCase
         $port = $this->uri->getPort();
         self::assertIsInt($port);
     }
+
+    public function testGetPathDeveRetornarString()
+    {
+        $path = $this->uri->getPath();
+
+        self::assertIsString($path);
+        self::assertEquals('/', $path);
+    }
+
+    public function testGetQueryDeveRetornarString()
+    {
+        $query = $this->uri->getQuery();
+
+        self::assertIsString($query);
+        self::assertEquals('msg=teste', $query);
+    }
+
+    public function testGetFragmentDeveRetornarString()
+    {
+        $fragment = $this->uri->getFragment();
+
+        self::assertIsString($fragment);
+    }
+
+    public function testWithSchemeDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withScheme('https');
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+    }
+
+    public function testWithUserInfoDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withUserInfo(' ');
+        
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+    }
+
+    public function testWithHostDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withHost('127.0.0.1');
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+        self::assertEquals('127.0.0.1', $uriNovo->getHost());
+    }
+
+    public function testWithPortDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withPort("8080");
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+        self::assertEquals('8080', $uriNovo->getPort());
+    }
+
+    public function testWithPathDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withPath("/rota");
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+        self::assertEquals('/rota', $uriNovo->getPath());
+    }
+
+    public function testWithQueryDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withQuery("msg=novo");
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+        self::assertEquals("msg=novo", $uriNovo->getQuery());
+    }
+
+    public function testWithFragmentDeveRetornarUriInterface()
+    {
+        $uriNovo = $this->uri->withFragment('link');
+
+        self::assertNotEquals($uriNovo, $this->uri);
+        self::assertInstanceOf(UriInterface::class, $uriNovo);
+        self::assertEquals('link', $uriNovo->getFragment());
+    }
 }
