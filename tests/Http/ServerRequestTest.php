@@ -116,7 +116,7 @@ class ServerRequestTest extends TestCase
     {
         $parsedBody = $this->request->getParsedBody();
 
-        self::assertInstanceOf(stdClass::class, $parsedBody);
+        self::assertIsArray($parsedBody);
     }
 
     public function testWithParsedBodyDeveRetornarUmaNovaInstancia()
