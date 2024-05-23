@@ -1,5 +1,5 @@
 {
-    "name": "hugoandrade/psr7",
+    "name": "hugoandrade/http-message-psr7",
     "description": "Implementation of PHP PSR-7",
     "type": "library",
     "license": "MIT",
