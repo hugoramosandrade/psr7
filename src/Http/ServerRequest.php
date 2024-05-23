@@ -35,13 +35,13 @@ class ServerRequest extends Request implements ServerRequestInterface
         if (!$this->hasHeader('Host')) $this->updateHostFromUri();
 
         if ($body !== '' && !is_null($body)) {
-            $this->parsedBody = json_decode($body);
+            $this->parsedBody = json_decode($body, true);
             $this->stream = Stream::create($body);
         }
 
         if ($body instanceof StreamInterface) {
             $this->stream = $body;
-            $this->parsedBody = json_decode($body->getContents());
+            $this->parsedBody = json_decode($body->getContents(), true);
         }
     }
 
