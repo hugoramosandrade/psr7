@@ -1,7 +1,7 @@
 {
     "name": "hugoandrade/http-message-psr7",
     "description": "Implementation of PHP PSR-7",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "type": "library",
     "license": "MIT",
     "autoload": {
