@@ -14,7 +14,7 @@ class Uri implements UriInterface
     private string $scheme = '';
     private string $userInfo = '';
     private string $host = '';
-    private string|int $port = '';
+    private string|int|null $port = '';
     private string $path = '';
     private string $query = '';
     private string $fragment = '';
